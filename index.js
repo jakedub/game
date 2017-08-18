@@ -58,9 +58,17 @@ app.get("/", function (req,res){
 //redirect if count is over 8. // TODO: Needs session count.
 app.get("/", function(req,res){
   if (count > 7){
-    res.render("home", {list of stored items?})
+    alert("You lose!");
+    function replay(){
+    if (confirm("Yes!") == true) {
+        res.redirect("/home");
+    } else {
+        txt = "Go home loser!";
+    }
+    res.redirect()
   }
-  res.redirect("/home");
+}
+  res.redirect("/home"); //this needs changed
 })
 
 
