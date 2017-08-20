@@ -33,7 +33,31 @@ app.use(session({
 const list = [{
   word: "",
   incorrect: false;
-}]
+}];
+
+//variable for count
+let count = 0;
+
+//use for if wrong
+app.use((req, res, next) =>{
+  if (typeof req.session.count !== {list:word}){
+    req.session.count = 0;
+  }
+  next();
+});
+
+//if wrong this should be where counted on the page
+app.get("/", (req, res) => {
+  res.send(
+    `<a href="/wrong"></a>
+    <span>${count}</span>`);
+});
+
+//if wrong up 1
+app.get("/wrong", (req, res) => {
+  req.session.count += 1;
+  res.redirect("/home");
+});
 
 //rendering to initial page. Setting home as initial site. Using index.mustache for the page.
 app.get("/home", function (req,res){
@@ -70,7 +94,6 @@ app.get("/", function(req,res){
 }
   res.redirect("/home"); //this needs changed
 })
-
 
 
 
