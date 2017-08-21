@@ -15,7 +15,7 @@ app.use(expressValidator());
 app.use(express.static("public"));
 
 //random words
-app.use(express.static("/usr/share/dict/words"));
+app.use(express.static("./usr/share/dict/words"));
 
 //mustache
 app.engine('mustache', mustacheExpress());
@@ -29,30 +29,52 @@ app.use(session({
   saveUninitialized: true,
 }));
 
-//variable for storing the randomly assigned word
-const list = [{
-  word: "",
-  incorrect: false;
-}];
+//variable for game
 
-//variable for count
-let count = 0;
+const wordGuess = {
+  word: theGuess(),
+  display: [],
+  guesses: 8,
+  letter: [],
+  endMessage: ""
+};
 
-//use for if wrong
-app.use((req, res, next) =>{
-  if (typeof req.session.count !== {list:word}){
-    req.session.count = 0;
+//pull words
+function theGuess() {
+  let word = words[Math.floor(Math.random()*words.length)];
+  return word;
+}
+
+app.get("/home", function(req,res){
+  wordGuess.display = newWords(wordGuess.word, wordGuess.letter);
+  if (endGame function){
+    res.render("endGame", wordGuess);
+  } else {
+    res.render("index", game);
   }
-  next();
-});
+})
 
-//if wrong this should be where counted on the page
-app.get("/", (req, res) => {
-  res.send(
-    `<a href="/wrong"></a>
-    <span>${count}</span>`);
-});
-
+//needs to run through
+function newWords(x,y){
+  for (let i=0; i<word.length, i++){
+    if (y.includes(x[i])){
+      display.push(y[i])
+    } else {
+      display.push("-");
+    }
+  }
+  return display;
+}
+//end of the game situation
+function endGame(){
+  if (game.guesses === 0){
+    wordGuess.endMessage == "I have bested you"
+    return;
+  } else {
+    wordGuess.endMessage == "I will beat you next time"
+    return;
+  }
+}
 //if wrong up 1
 app.get("/wrong", (req, res) => {
   req.session.count += 1;
@@ -63,38 +85,6 @@ app.get("/wrong", (req, res) => {
 app.get("/home", function (req,res){
   res.render("index");
 })
-
-//assign random word based on the static directory. // TODO: Need to find a way to assign a word. Then store it.
-app.post("/home", function (req,res){
-  if (originalUrl === "/home"){
-    assign random letter.
-  }
-  res.render("index")
-})
-
-
-//get the input, match against the stored word. Using sessions likely
-app.get("/", function (req,res){
-  console.log("checkpoing");
-  res.redirect("/home");
-});
-
-//redirect if count is over 8. // TODO: Needs session count.
-app.get("/", function(req,res){
-  if (count > 7){
-    alert("You lose!");
-    function replay(){
-    if (confirm("Yes!") == true) {
-        res.redirect("/home");
-    } else {
-        txt = "Go home loser!";
-    }
-    res.redirect()
-  }
-}
-  res.redirect("/home"); //this needs changed
-})
-
 
 
 
