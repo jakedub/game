@@ -33,62 +33,79 @@ app.use(session({
 
 const wordGuess = {
   word: theGuess(),
-  display: [],
+  displayGuess: [],
   guesses: 8,
   letter: [],
-  endMessage: ""
+  completion: ""
 };
 
-//pull words
-function theGuess() {
-  let word = words[Math.floor(Math.random()*words.length)];
-  return word;
-}
 
 app.get("/home", function(req,res){
-  wordGuess.display = newWords(wordGuess.word, wordGuess.letter);
-  if (endGame){
+  wordGuess.displayGuess = newWords(wordGuess.word, wordGuess.letter);
+  if (endGame(res)){
     res.render("endGame", wordGuess);
   } else {
     res.render("index", wordGuess);
   }
 })
 
-app.post("/word", function(req,res){
+app.post("/trial", function(req,res){
   if (endGame()){
     game = newGame();
-    res.redirect("/home", wordGuess);
+    res.redirect("/home");
   } else {
-    res.render("index", wordGuess);
+    game.letter.push(req.body.trial);
+    countLetters(req.body.trial);
+    res.render("/home");
   }
 })
 
+function theGuess() {
+  let word = words[Math.floor(Math.random()*words.length)];
+  return word;
+}
+
+
 //needs to run through entry and push to guess list right?
 function newWords(x,y){
+  let displayGuess = [];
   for (let i=0; i<word.length, i++){
     if (y.includes(x[i])){
-      display.push(y[i])
+      displayGuess.push(y[i])
     } else {
-      display.push("-");
+      displayGuess.push("-");
     }
   }
-  return display;
+  return displayGuess;
+}
+
+function guessCount(guess){
+  let splitWord = game.word.split("");
+  if(!splitWord.includes(guess)) {
+    game.guess --;
+  }
 }
 //end of the game situation
 function endGame(){
   if (game.guesses === 0){
-    wordGuess.endMessage == "I have bested you"
+    wordGuess.completion == "I have bested you"
     return;
   } else {
-    wordGuess.endMessage == "I will beat you next time"
+    wordGuess.completion == "I will beat you next time"
     return;
   }
 }
-//if wrong up 1
-app.get("/wrong", (req, res) => {
-  req.session.count += 1;
-  res.redirect("/home");
-});
+
+function beginGame(){
+  let newTrial = {
+    word: theGuess(),
+    displayGuess: [],
+    guesses: 8,
+    letter: [],
+    completion: ""
+  };
+  return beginGame;
+}
 
 //rendering to initial page. Setting home as initial site. Using index.mustache for the page.
 app.get("/home", function (req,res){
