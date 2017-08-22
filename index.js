@@ -5,11 +5,11 @@ const app = express();
 const mustache = require ("mustache");
 const mustacheExpress = require('mustache-express');
 const bodyParser = require ("body-parser");
+const fs = require("fs");
 const words = fs.readFileSync("/usr/share/dict/words", "utf-8").toLowerCase().split("\n");
 //body parser
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}));
-app.use(expressValidator());
 
 //styling
 app.use(express.static("public"));
@@ -40,14 +40,14 @@ const wordGuess = {
 };
 
 
-app.get("/home", function(req,res){
-  wordGuess.displayGuess = newWords(wordGuess.word, wordGuess.letter);
-  if (endGame(res)){
-    res.render("endGame", wordGuess);
-  } else {
-    res.render("index", wordGuess);
-  }
-})
+// app.get("/home", function(req,res){
+//   wordGuess.displayGuess = newWords(wordGuess.word, wordGuess.letter);
+//   if (endGame(res)){
+//     res.render("end", wordGuess);//need to do something here
+//   } else {
+//     res.render("index", wordGuess);
+//   }
+// })
 
 app.post("/trial", function(req,res){
   if (endGame()){
@@ -67,11 +67,11 @@ function theGuess() {
 
 
 //needs to run through entry and push to guess list right?
-function newWords(x,y){
+function newWords(guess,letters){
   let displayGuess = [];
-  for (let i=0; i<word.length, i++){
-    if (y.includes(x[i])){
-      displayGuess.push(y[i])
+  for (let i=0; i<guess.length; i++){
+    if (letters.includes(guess[i])){
+      displayGuess.push(letters[i])
     } else {
       displayGuess.push("-");
     }
@@ -86,15 +86,15 @@ function guessCount(guess){
   }
 }
 //end of the game situation
-function endGame(){
-  if (game.guesses === 0){
-    wordGuess.completion == "I have bested you"
-    return;
-  } else {
-    wordGuess.completion == "I will beat you next time"
-    return;
-  }
-}
+// function endGame(){
+//   if (trial.guesses === 0){
+//     wordGuess.completion == "I have bested you"
+//     return;
+//   } else {
+//     wordGuess.completion == "I will beat you next time"
+//     return;
+//   }
+// }
 
 function beginGame(){
   let newTrial = {
