@@ -47,7 +47,7 @@ function theGuess() {
 
 app.get("/home", function(req,res){
   wordGuess.display = newWords(wordGuess.word, wordGuess.letter);
-  if (endGame function){
+  if (endGame){
     res.render("endGame", wordGuess);
   } else {
     res.render("index", wordGuess);
