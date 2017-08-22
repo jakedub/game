@@ -40,23 +40,23 @@ const wordGuess = {
 };
 
 
-// app.get("/home", function(req,res){
-//   wordGuess.displayGuess = newWords(wordGuess.word, wordGuess.letter);
-//   if (endGame(res)){
-//     res.render("end", wordGuess);//need to do something here
-//   } else {
-//     res.render("index", wordGuess);
-//   }
-// })
+app.get("/", function(req,res){
+  wordGuess.displayGuess = newWords(wordGuess.word, wordGuess.letter);
+  if (endGame(res)){
+    res.render("end", wordGuess);
+  } else {
+    res.render("index", wordGuess);
+  }
+})
 
 app.post("/trial", function(req,res){
   if (endGame()){
     game = newGame();
-    res.redirect("/home");
+    res.redirect("/");
   } else {
     game.letter.push(req.body.trial);
     countLetters(req.body.trial);
-    res.render("/home");
+    res.render("/");
   }
 })
 
@@ -66,7 +66,7 @@ function theGuess() {
 }
 
 
-//needs to run through entry and push to guess list right?
+//needs to run through entry and push to guess list
 function newWords(guess,letters){
   let displayGuess = [];
   for (let i=0; i<guess.length; i++){
@@ -85,16 +85,17 @@ function guessCount(guess){
     game.guess --;
   }
 }
+
 //end of the game situation
-// function endGame(){
-//   if (trial.guesses === 0){
-//     wordGuess.completion == "I have bested you"
-//     return;
-//   } else {
-//     wordGuess.completion == "I will beat you next time"
-//     return;
-//   }
-// }
+function endGame(){
+  if (trial.guesses === 0){
+    wordGuess.completion == "I have bested you"
+    return;
+  } else {
+    wordGuess.completion == "I will beat you next time"
+    return;
+  }
+}
 
 function beginGame(){
   let newTrial = {
@@ -108,7 +109,7 @@ function beginGame(){
 }
 
 //rendering to initial page. Setting home as initial site. Using index.mustache for the page.
-app.get("/home", function (req,res){
+app.get("/", function (req,res){
   res.render("index");
 })
 
