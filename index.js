@@ -50,11 +50,20 @@ app.get("/home", function(req,res){
   if (endGame function){
     res.render("endGame", wordGuess);
   } else {
-    res.render("index", game);
+    res.render("index", wordGuess);
   }
 })
 
-//needs to run through
+app.post("/word", function(req,res){
+  if (endGame()){
+    game = newGame();
+    res.redirect("/home", wordGuess);
+  } else {
+    res.render("index", wordGuess);
+  }
+})
+
+//needs to run through entry and push to guess list right?
 function newWords(x,y){
   for (let i=0; i<word.length, i++){
     if (y.includes(x[i])){
