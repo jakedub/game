@@ -31,7 +31,7 @@ app.use(session({
 
 //variable for game
 
-const wordGuess = {
+let wordGuess = {
   word: theGuess(),
   displayGuess: [],
   guesses: 8,
@@ -51,10 +51,10 @@ app.get("/", function(req,res){
 
 app.post("/trial", function(req,res){
   if (endGame()){
-    game = newGame();
+    wordGuess = beginGame();
     res.redirect("/");
   } else {
-    game.letter.push(req.body.trial);
+    wordGuess.letter.push(req.body.trial);
     countLetters(req.body.trial);
     res.render("/");
   }
@@ -67,10 +67,10 @@ function theGuess() {
 
 
 //needs to run through entry and push to guess list
-function newWords(guess,letters){
+function newWords(word,letters){
   let displayGuess = [];
-  for (let i=0; i<guess.length; i++){
-    if (letters.includes(guess[i])){
+  for (let i=0; i<word.length; i++){
+    if (letters.includes(word[i])){
       displayGuess.push(letters[i])
     } else {
       displayGuess.push("-");
@@ -79,16 +79,16 @@ function newWords(guess,letters){
   return displayGuess;
 }
 
-function guessCount(guess){
-  let splitWord = game.word.split("");
+function countLetters(guess){
+  let splitWord = wordGuess.word.split("");
   if(!splitWord.includes(guess)) {
-    game.guess --;
+    wordGuess.guess --;
   }
 }
 
 //end of the game situation
 function endGame(){
-  if (trial.guesses === 0){
+  if (wordGuess.guesses === 0){
     wordGuess.completion == "I have bested you"
     return;
   } else {
@@ -112,7 +112,6 @@ function beginGame(){
 app.get("/", function (req,res){
   res.render("index");
 })
-
 
 
 //local checking

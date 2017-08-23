@@ -10,7 +10,6 @@
           <h3>Mystery Word</h3>
           <h3>You have {{guesses}} guesses left</h3>
       </header>
-      <main>
         <div class="display">
           {{#letter}}
           <p>{{letters}}</p>
@@ -22,10 +21,11 @@
             <button type="submit" name="button">Fail Again</button>
           </form>
         </div>
+        {{#letter}}
         <div class="left">
           Remaining Lives: {{displayGuess}}
         </div>
-      </main>
+        {{/letter}}
     </div>
   </body>
 </html>

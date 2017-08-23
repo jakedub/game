@@ -9,7 +9,6 @@
        <header><h1>Trial by Combat</h1>
            <h3>You have {{guesses}} guesses before sudden death</h3>
        </header>
-       <main>
          <div class="display">
            {{#trial}}
              {{.}}
@@ -21,10 +20,11 @@
              <button type="submit" name="button">Make a guess...if you dare</button>
            </form>
          </div>
+         {{#trial}}
          <div class="left">
            Remaining lives: {{displayGuess}}
          </div>
-       </main>
+         {{/trial}}
      </div>
    </body>
 </html>
