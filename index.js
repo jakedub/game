@@ -60,7 +60,7 @@ app.post("/", function(req,res){
     wordGuess.letter.push(req.body.trial);
     countLetters(req.body.trial);
     console.log(wordGuess);
-    res.render("index", wordGuess);
+    res.redirect('/');
   }
 })
 
@@ -75,7 +75,7 @@ function newWords(word,letters){
   let displayGuess = [];
   for (let i=0; i<word.length; i++){
     if (word.includes(letters[i])){
-      displayGuess.push(letters[i]) && displayGuess.slice(letters[i]-1);
+     displayGuess[i-1]= letters[i];
     } else {
       displayGuess.push("-");
     }
