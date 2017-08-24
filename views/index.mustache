@@ -12,6 +12,7 @@
          <div class="display">
            {{#trial}}
              {{.}}
+             Remaining lives: {{displayGuess}}
            {{/trial}}
          </div>
          <div class="choice">
@@ -20,11 +21,6 @@
              <button type="submit" name="button">Make a guess...if you dare</button>
            </form>
          </div>
-         {{#trial}}
-         <div class="left">
-           Remaining lives: {{displayGuess}}
-         </div>
-         {{/trial}}
      </div>
    </body>
 </html>

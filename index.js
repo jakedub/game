@@ -54,9 +54,9 @@ app.post("/trial", function(req,res){
     wordGuess = beginGame();
     res.redirect("/");
   } else {
-    wordGuess.letter.push(req.body.trial);
-    countLetters(req.body.trial);
-    res.render("/");
+    wordGuess.letter.push(req.body.guess);
+    countLetters(req.body.guess);
+    res.render("index");
   }
 })
 
@@ -113,7 +113,9 @@ app.get("/", function (req,res){
   res.render("index");
 })
 
-
+app.get("/trial", function (req,res){
+  res.render("trial");
+})
 //local checking
 app.listen(3000, function(){
   console.log("I can see you");
