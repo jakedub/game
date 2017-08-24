@@ -14,12 +14,21 @@
              {{.}}
              Remaining lives: {{displayGuess}}
            {{/trial}}
+           {{#displayGuess}}
+           {{.}}
+           {{/displayGuess}}
          </div>
          <div class="choice">
-           <form action='/trial' method='post'>
+           <form action='/' method='post'>
              <input maxlength="1" type="text" name="trial" value="" placeholder="Enter Carefully">
              <button type="submit" name="button">Make a guess...if you dare</button>
            </form>
+         </div>
+         <div>
+           <h1>Guessed Letters</h1>
+           {{#letter}}
+           {{.}}
+           {{/letter}}
          </div>
      </div>
    </body>

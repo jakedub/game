@@ -32,10 +32,11 @@ app.use(session({
 //variable for game
 
 let wordGuess = {
-  word: theGuess(),
+  word: theWord(),
   displayGuess: [],
   guesses: 8,
   letter: [],
+  incorrect: [],
   completion: ""
 };
 
@@ -49,29 +50,32 @@ app.get("/", function(req,res){
   }
 })
 
-app.post("/trial", function(req,res){
+app.post("/", function(req,res){
   if (endGame()){
     wordGuess = beginGame();
+    // wordGuess.incorrect = displayWrong();
     res.redirect("/");
   } else {
-    wordGuess.letter.push(req.body.guess);
-    countLetters(req.body.guess);
-    res.render("index");
+    console.log(req.body);
+    wordGuess.letter.push(req.body.trial);
+    countLetters(req.body.trial);
+    console.log(wordGuess);
+    res.render("index", wordGuess);
   }
 })
 
-function theGuess() {
+function theWord() {
   let word = words[Math.floor(Math.random()*words.length)];
   return word;
 }
 
 
-//needs to run through entry and push to guess list
+//needs to run through entry and push to guess list. Needs to replace the "-" with correct letter
 function newWords(word,letters){
   let displayGuess = [];
   for (let i=0; i<word.length; i++){
-    if (letters.includes(word[i])){
-      displayGuess.push(letters[i])
+    if (word.includes(letters[i])){
+      displayGuess.push(letters[i]) && displayGuess.slice(letters[i]-1);
     } else {
       displayGuess.push("-");
     }
@@ -79,27 +83,45 @@ function newWords(word,letters){
   return displayGuess;
 }
 
+// function displayWrong(){
+//   let notCorrect = [];
+//   for (let i= 0; i< wordGuess.word.length; i++){
+//     notCorrect.push({letter.wordGuess[i]}, broken.wordGuess[i] === wordGuess.displayGuess)};
+//   return notCorrect;
+// }
+
 function countLetters(guess){
   let splitWord = wordGuess.word.split("");
   if(!splitWord.includes(guess)) {
-    wordGuess.guess --;
+    wordGuess.guesses --;
+
   }
 }
 
 //end of the game situation
+// function endGame(){
+//   if (wordGuess.guesses < 1){
+//     wordGuess.completion == "I have bested you"
+//     return;
+//   } else {
+//     wordGuess.completion == "I will beat you next time"
+//     return;
+//   }
+// }
+
 function endGame(){
-  if (wordGuess.guesses === 0){
-    wordGuess.completion == "I have bested you"
+  if (wordGuess.word === wordGuess.letter && wordGuess.guess > 0){
+    wordGuess.completion === "Ahhhh...I'm dead"
     return;
   } else {
-    wordGuess.completion == "I will beat you next time"
+    wordGuess.completion === "AI's are superior"
     return;
   }
 }
 
 function beginGame(){
   let newTrial = {
-    word: theGuess(),
+    word: theWord(),
     displayGuess: [],
     guesses: 8,
     letter: [],
@@ -113,9 +135,9 @@ app.get("/", function (req,res){
   res.render("index");
 })
 
-app.get("/trial", function (req,res){
-  res.render("trial");
-})
+// app.get("/trial", function (req,res){
+//   res.render("index");
+// })
 //local checking
 app.listen(3000, function(){
   console.log("I can see you");
