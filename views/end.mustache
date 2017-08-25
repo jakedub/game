@@ -8,8 +8,7 @@
     <div class="container">
       <header>
           <h3>Mystery Word</h3>
-          <h3>You have {{guesses}} guesses left</h3>
-          <h4>Remaining Lives: {{displayGuess}}</h4>
+          <h3>You have 0 guesses left</h3>
       </header>
         <div class="display">
           {{#letter}}
@@ -17,10 +16,7 @@
           {{/letter}}
         </div>
         <div class="choice">
-          <form action='/trial' method='post'>
-            <h1>{{completion}}</h1>
-            <button type="submit" name="button">Fail Again</button>
-          </form>
+            <a href="/">Would you like to fail again?</a>
         </div>
     </div>
   </body>

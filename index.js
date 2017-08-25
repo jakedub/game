@@ -1,3 +1,4 @@
+//new stuff
 const express = require("express"); //Express
 const path = require ("path");
 const session = require("express-session"); //Express Session
@@ -34,10 +35,8 @@ app.use(session({
 let wordGuess = {
   word: theWord(),
   displayGuess: [],
-  guesses: 8,
+  guesses: 2,
   letter: [],
-  incorrect: [],
-  completion: ""
 };
 
 
@@ -52,8 +51,7 @@ app.get("/", function(req,res){
 
 app.post("/", function(req,res){
   if (endGame()){
-    wordGuess = beginGame();
-    // wordGuess.incorrect = displayWrong();
+    // wordGuess = beginGame();
     res.redirect("/");
   } else {
     console.log(req.body);
@@ -74,8 +72,8 @@ function theWord() {
 function newWords(word,letters){
   let displayGuess = [];
   for (let i=0; i<word.length; i++){
-    if (word.includes(letters[i])){
-     displayGuess[i-1]= letters[i];
+    if (letters.includes(word[i])){
+    displayGuess.push(word[i]);
     } else {
       displayGuess.push("-");
     }
@@ -110,25 +108,25 @@ function countLetters(guess){
 // }
 
 function endGame(){
-  if (wordGuess.word === wordGuess.letter && wordGuess.guess > 0){
+  if (wordGuess.guesses === 0){
     wordGuess.completion === "Ahhhh...I'm dead"
-    return;
+    return true;
   } else {
     wordGuess.completion === "AI's are superior"
-    return;
+    return false;
   }
 }
 
-function beginGame(){
-  let newTrial = {
-    word: theWord(),
-    displayGuess: [],
-    guesses: 8,
-    letter: [],
-    completion: ""
-  };
-  return beginGame;
-}
+// function beginGame(){
+//   let newTrial = {
+//     word: theWord(),
+//     displayGuess: [],
+//     guesses: 2,
+//     letter: [],
+//     completion: ""
+//   };
+//   return beginGame;
+// }
 
 //rendering to initial page. Setting home as initial site. Using index.mustache for the page.
 app.get("/", function (req,res){
